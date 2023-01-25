@@ -1,0 +1,55 @@
+/* Navbar */
+/* Header image */
+.gradient-custom{
+    /* fallback for old browsers */
+    background: #ff9a9e;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom, rgba(255,154,158,0.1), rgba(250,208,196,0.1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to bottom, rgba(255,154,158,0.1), rgba(250,208,196,0.1))
+  }
+
+
+@font-face {
+    font-family: 'Alexander';
+    src: url('../fonts/alexander.woff2') format('woff2'),
+         url('../fonts/alexander.woff') format('woff');
+         url('alexander.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+body{
+    font-family: 'Alexander';
+}
+footer{
+    font-size: 18px;
+}
+/* H */
+.main-title{
+font-size: 50px;
+}
+.main-content{
+    font-size: 30px;
+}
+/* Links */
+.navigation-link:hover{
+    /*color: #302b2b;*/
+    color: black;
+    font-weight: 800;
+}
+/* Buttons */
+.main-btn{
+    font-weight: 600;
+}
+/* Buttons hover */
+.logo:hover{
+    scale: 1.2;
+}
+.main-btn:hover{
+    background-color: whitesmoke;
+    color: black;
+}

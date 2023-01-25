@@ -1,0 +1,26 @@
+{% extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+    <div
+        class="p-5 text-center bg-image "
+        style="
+          background-image: url({% static 'masters_app/img/header-image.jpg' %});
+          background-attachment: fixed;
+          min-height: 100vh;
+        "
+    >
+        <div class="mask gradient-custom" style="background-color: rgba(0, 0, 0, 0.6);">
+          <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="text-white">
+              <h1 class="mb-3 main-title">Головна сторінка</h1>
+              <h4 class="mb-3 main-content">Контент головної сторінки</h4>
+              <a class="btn btn-outline-light btn-lg main-btn" href="#!" role="button"
+              >Натисни сюди</a
+              >
+            </div>
+          </div>
+        </div>
+    </div>
+
+{% endblock content %}
