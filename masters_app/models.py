@@ -3,21 +3,20 @@ from django.urls import reverse
 
 
 # Create your models here.
-class Master(models.Model):
+class Page(models.Model):
     firstname = models.CharField(max_length=255, verbose_name='Name')
     lastname = models.CharField(max_length=255, verbose_name='Surname')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-    category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Category')
-    about = models.TextField(verbose_name='About')
-    photo = models.ImageField(upload_to="photos/masters/%Y/", verbose_name='Photo')
-    website = models.URLField(blank=True, verbose_name='Website')
-    tg_id = models.IntegerField(unique=True, blank=True, verbose_name='Telegram ID')
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name='Create time')
-    update_time = models.DateTimeField(auto_now=True, verbose_name='Last update')
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Category', blank=True)
+    city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name='City', blank=True)
+    about = models.TextField(verbose_name='About', blank=True)
+    user_photo = models.ImageField(upload_to="photos/users/%Y/", verbose_name='Photo',
+                                   blank=True, default='photos/default/user_photo.jpg')
+    tg_id = models.IntegerField(unique=True, verbose_name='Telegram ID', blank=True)
 
     class Meta:
-        verbose_name = 'Master'
-        verbose_name_plural = 'Masters'
+        verbose_name = 'Page'
+        verbose_name_plural = 'Pages'
 
     def __str__(self):
         return self.firstname + ' ' + self.lastname
@@ -27,8 +26,7 @@ class Master(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Category Name')
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    name = models.CharField(max_length=255, verbose_name='Category name')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='Create time')
 
     class Meta:
@@ -38,21 +36,56 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('categories', kwargs={'category_slug': self.slug})
+
+class Album(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Album name')
+    description = models.TextField(verbose_name='Description', blank=True)
+    main_picture = models.ImageField(upload_to="photos/albums/%Y/", verbose_name='Main picture',
+                                     default='photos/default/album_main.jpg')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='Create time')
+    update_time = models.DateTimeField(auto_now=True, verbose_name='Update time')
+    page = models.ForeignKey('Page', on_delete=models.CASCADE, verbose_name='Page')
+
+    class Meta:
+        verbose_name = 'Album'
+        verbose_name_plural = 'Albums'
+
+    def __str__(self):
+        return self.name
 
 
 class Work(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Name')
-    master = models.ForeignKey('Master', on_delete=models.CASCADE, verbose_name='Master')
+    album = models.ForeignKey('Album', on_delete=models.CASCADE, verbose_name='Album')
     photo = models.ImageField(upload_to="photos/works/%Y/%m/%d/", verbose_name='Photo')
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name='Create time')
-    update_time = models.DateTimeField(auto_now=True, verbose_name='Last update')
+    add_time = models.DateTimeField(auto_now_add=True, verbose_name='Add time')
 
     class Meta:
         verbose_name = 'Work'
         verbose_name_plural = 'Works'
 
-    def __str__(self):
-        return self.name
 
+class City(models.Model):
+    name = models.CharField(max_length=255, verbose_name='City')
+
+    class Meta:
+        verbose_name = 'City'
+        verbose_name_plural = 'Cities'
+
+
+class Link(models.Model):
+    url = models.URLField(verbose_name='URL')
+    link_type = models.ForeignKey('LinkType', on_delete=models.CASCADE, verbose_name='link type')
+    page = models.ForeignKey('Page', on_delete=models.CASCADE, verbose_name='Page')
+
+    class Meta:
+        verbose_name = 'Link'
+        verbose_name_plural = 'Links'
+
+
+class LinkType(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Site name')
+    css_class = models.CharField(max_length=255, verbose_name='Link Type')
+
+    class Meta:
+        verbose_name = 'Link type'
+        verbose_name_plural = 'Link types'

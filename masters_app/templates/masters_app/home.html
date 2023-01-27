@@ -13,11 +13,16 @@
         <div class="mask gradient-custom" style="background-color: rgba(0, 0, 0, 0.6);">
           <div class="d-flex justify-content-center align-items-center h-100">
             <div class="text-white">
-              <h1 class="mb-3 main-title">Головна сторінка</h1>
-              <h4 class="mb-3 main-content">Контент головної сторінки</h4>
-              <a class="btn btn-outline-light btn-lg main-btn" href="#!" role="button"
-              >Натисни сюди</a
-              >
+              <h1 class="mb-3 main-title">Ласкаво просимо на Beauty Masters!</h1>
+              <form method="post" class = 'contact-form' >
+                {% csrf_token %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+                {% for f in form %}
+                    <p class="form-line">{{f}}</p>
+                    <div class="form-error">{{ f.errors }}</div>
+                {% endfor %}
+              </form>
+            <button type="submit" class="btn btn-outline-light" data-mdb-ripple-color="dark" name = "_change">Увійти</button>
             </div>
           </div>
         </div>
