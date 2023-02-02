@@ -1,0 +1,17 @@
+{% extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+     <form method="post" class = 'contact-form' >
+        {% csrf_token %}
+            <div class="form-error">{{ form.non_field_errors }}</div>
+            {% for f in form %}
+                <label>{{ f.label }}</label>
+                <p class="form-line">{{f}}</p>
+                <div class="form-error">{{ f.errors }}</div>
+            {% endfor %}
+        <button type="submit" class="btn btn-outline-dark text-dark" >
+            Зареєструватися
+        </button>
+    </form>
+{% endblock content %}

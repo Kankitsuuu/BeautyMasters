@@ -14,15 +14,7 @@
           <div class="d-flex justify-content-center align-items-center h-100">
             <div class="text-white">
               <h1 class="mb-3 main-title">Ласкаво просимо на Beauty Masters!</h1>
-              <form method="post" class = 'contact-form' >
-                {% csrf_token %}
-                <div class="form-error">{{ form.non_field_errors }}</div>
-                {% for f in form %}
-                    <p class="form-line">{{f}}</p>
-                    <div class="form-error">{{ f.errors }}</div>
-                {% endfor %}
-              </form>
-            <button type="submit" class="btn btn-outline-light" data-mdb-ripple-color="dark" name = "_change">Увійти</button>
+              <a class="btn btn-outline-light text-light" href="{% url 'login' %} ">Увійти</a>
             </div>
           </div>
         </div>

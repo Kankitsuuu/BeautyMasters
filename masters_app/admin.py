@@ -5,7 +5,7 @@ from .models import Page, Category, Work, Album, City, Link, LinkType
 # Register your models here.
 class PageAdmin(admin.ModelAdmin):
     list_display = ('id', 'firstname', 'lastname', 'slug', 'category', 'city', 'about', 'user_photo',  'tg_id')
-    list_display_links = ('id', 'category', 'city')
+    list_display_links = ('id',)
     search_fields = ('id', 'firstname', 'lastname')
     list_filter = ('category', 'city')
     prepopulated_fields = {'slug': ('firstname', 'lastname')}

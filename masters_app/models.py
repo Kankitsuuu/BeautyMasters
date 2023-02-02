@@ -1,18 +1,20 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 # Create your models here.
 class Page(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User', unique=True)
     firstname = models.CharField(max_length=255, verbose_name='Name')
     lastname = models.CharField(max_length=255, verbose_name='Surname')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-    category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Category', blank=True)
-    city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name='City', blank=True)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Category', null=True)
+    city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name='City', null=True)
     about = models.TextField(verbose_name='About', blank=True)
     user_photo = models.ImageField(upload_to="photos/users/%Y/", verbose_name='Photo',
                                    blank=True, default='photos/default/user_photo.jpg')
-    tg_id = models.IntegerField(unique=True, verbose_name='Telegram ID', blank=True)
+    tg_id = models.IntegerField(unique=True, verbose_name='Telegram ID', null=True)
 
     class Meta:
         verbose_name = 'Page'
@@ -22,7 +24,7 @@ class Page(models.Model):
         return self.firstname + ' ' + self.lastname
 
     def get_absolute_url(self):
-        return reverse('show_master', kwargs={'master_slug': self.slug})
+        return reverse('show_page', kwargs={'page_slug': self.slug})
 
 
 class Category(models.Model):
@@ -71,6 +73,9 @@ class City(models.Model):
         verbose_name = 'City'
         verbose_name_plural = 'Cities'
 
+    def __str__(self):
+        return self.name
+
 
 class Link(models.Model):
     url = models.URLField(verbose_name='URL')
@@ -81,6 +86,9 @@ class Link(models.Model):
         verbose_name = 'Link'
         verbose_name_plural = 'Links'
 
+    def __str__(self):
+        return self.link_type
+
 
 class LinkType(models.Model):
     name = models.CharField(max_length=255, verbose_name='Site name')
@@ -89,3 +97,6 @@ class LinkType(models.Model):
     class Meta:
         verbose_name = 'Link type'
         verbose_name_plural = 'Link types'
+
+    def __str__(self):
+        return self.name

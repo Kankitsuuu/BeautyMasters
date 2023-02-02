@@ -1,0 +1,22 @@
+{% extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+    <p class ='text-dark'>{{ page }}</p>
+    <p>{{ page.user_photo.url }}</p>
+    <p><img src="{{ page.user_photo.url }}" style="max-height: 300px " alt="user-photo"></p>
+    <p class ='text-dark'>{{ page.about }}</p>
+    <p class ='text-dark'>{{ page.city }}</p>
+    <p class ='text-dark'>{{ page.category }}</p>
+    {%  if request.user.is_authenticated and request.user == page.user %}
+    <a class="btn text-dark btn-danger"
+       href="{% url 'settings' page.slug %}" >
+       Settings
+    </a>
+
+    <a class="btn text-dark btn-outline-dark"
+       href="{% url 'logout' %}" >
+       Logout
+    </a>
+    {% endif %}
+{% endblock content %}

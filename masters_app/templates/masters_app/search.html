@@ -1,0 +1,14 @@
+{% extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+<form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Шукати</button>
+  </form>
+  <ul>
+  {% for page in filter.qs %}
+    <li>{{ page.firstname }} - {{ page.lastname }}</li>
+  {% endfor %}
+  </ul>
+{% endblock content %}
