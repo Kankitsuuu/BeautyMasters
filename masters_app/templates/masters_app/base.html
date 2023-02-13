@@ -14,12 +14,16 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    />
   </head>
   <body>
     <header>
         <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container w-50 me-auto">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+          <div class="container w-50 me-auto">
           <button
             class="navbar-toggler"
             type="button"
@@ -32,73 +36,64 @@
             <i class="fas fa-bars"></i>
           </button>
           <div class="collapse navbar-collapse" id="navbarExample01">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
-              {% for m in menu %}
-                  <li class="nav-item active">
-                    <a class="nav-link navigation-link " aria-current="page" href="{% url m.url_name %}">{{ m.title }}</a>
-                  </li>
-              {% endfor %}
-
-            </ul>
+              <a class = "nav-item active text-dark" href="{% url 'home' %}">
+                  <i class="fas fa-home fa-lg me-2 home-logo"></i>
+              </a>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
+                  {% for m in menu %}
+                      <li class="nav-item active">
+                        <a class="nav-link navigation-link " aria-current="page" href="{% url m.url_name %}">{{ m.title }}</a>
+                      </li>
+                  {% endfor %}
+              </ul>
           </div>
         </div>
-        <!--Search field -->
-        <div class="input-group rounded w-25 me-auto">
-            <input type="search" class="form-control rounded" placeholder="Search"
-                   aria-label="Search" aria-describedby="search-addon" />
-            <span class="input-group-text border-0" id="search-addon">
-            <i class="fas fa-search"></i>
-            </span>
-        </div>
-        <!--Search field -->
-      </nav>
+        <!-- Right Links-->
+          <div class="d-flex align-items-center w-auto me-5">
+                {% if request.user.is_authenticated %}
+                    <p class = "nav-link text-dark m-2">Увійшов як <span style=" color: #01579b;">{{ request.user.username }}</span></p>
+                    <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                    >
+                    Іконка юзера
+                    </a>
+                    <!-- Dropdown menu -->
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                      <a class="dropdown-item" href="{% url 'logout' %}">Вийти</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'settings' user.username|lower %}">Налаштування сторінки</a>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </li>
+                    </ul>
+                {% else %}
+                    <a type="button" class="btn btn-link px-3 me-2" href="{% url 'login' %}">
+                    Увійти
+                    </a>
+                    <a type="button" class="btn btn-primary me-3" href="{% url 'register' %}">
+                      Зареєструватися
+                    </a>
+                {% endif %}
+          </div>
+        <!-- Right Links-->
+        </nav>
         <!-- Navbar -->
     </header>
 
     {% block content %}
     {% endblock content %}
 
-    <footer class="bg-transparent text-center text-white fixed-bottom">
-      <!-- Grid container -->
-      <div class="container p-4 pb-0">
-        <!-- Section: Social media -->
-        <section class="mb-4">
-          <!-- Instagram -->
-          <a
-            class="btn btn-lg text-white btn-floating m-2 logo"
-            style="background-color: #c64652;"
-            href="https://www.instagram.com/kankitsuuu/"
-            role="button"
-            ><i class="fab fa-instagram"></i
-          ></a>
-
-          <!-- Github -->
-          <a
-            class="btn btn-lg text-white btn-floating m-2 logo"
-            style="background-color: #333333;"
-            href="https://github.com/Kankitsuuu"
-            role="button"
-            ><i class="fab fa-github"></i
-          ></a>
-             <!-- Telegram -->
-          <a
-            class="btn btn-lg text-white btn-floating m-2 logo"
-            style="background-color: #34ace0;"
-            href="https://t.me/kankitsuuu"
-            role="button"
-            ><i class="fas fa-paper-plane fa-lg"></i
-          ></a>
-        </section>
-        <!-- Section: Social media -->
-      </div>
-      <!-- Grid container -->
-
-      <!-- Copyright -->
-      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        Created by Kankitsuuu
-      </div>
-      <!-- Copyright -->
-    </footer>
+    {%  block footer %}
+    {%  endblock footer %}
 
     <script type="text/javascript" src="{% static "masters_app/js/mdb.min.js" %}"></script>
     <!-- Custom scripts -->

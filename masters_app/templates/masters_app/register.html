@@ -2,16 +2,74 @@
 {%  load static %}
 
 {% block content %}
-     <form method="post" class = 'contact-form' >
-        {% csrf_token %}
-            <div class="form-error">{{ form.non_field_errors }}</div>
-            {% for f in form %}
-                <label>{{ f.label }}</label>
-                <p class="form-line">{{f}}</p>
-                <div class="form-error">{{ f.errors }}</div>
-            {% endfor %}
-        <button type="submit" class="btn btn-outline-dark text-dark" >
-            Зареєструватися
-        </button>
-    </form>
+    <div
+        class="p-5 text-center bg-image"
+        style="
+          background-image: url({% static 'masters_app/img/register_bg.jpg' %});
+          background-attachment: fixed;
+          min-height: 100vh;
+        "
+    >
+        <div class = "container-md align-items-center" style="width: 500px">
+            <div class = "card text-center pb-5 mt-3">
+                <div class = "card-header fs-3">Реєстрація</div>
+                <form method="post" class = 'contact-form' >
+                {% csrf_token %}
+                    <div class="form-error">{{ form.non_field_errors }}</div>
+                    {% for f in form %}
+                        <p class="form-line my-4">{{f}}</p>
+                        <div class="form-error">{{ f.errors }}</div>
+                    {% endfor %}
+                <button type="submit" class="btn btn-primary text-light mt-3" >
+                    Зареєструватися
+                </button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
+
+{% block footer %}
+ <!-- Footer -->
+    <footer class="bg-transparent text-center text-white fixed-bottom">
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+        <!-- Section: Social media -->
+        <section class="mb-4">
+          <!-- Instagram -->
+          <a
+            class="btn btn-lg text-white btn-floating m-2 logo"
+            style="background-color: #c64652;"
+            href="https://www.instagram.com/kankitsuuu/"
+            role="button"
+            ><i class="fab fa-instagram"></i
+          ></a>
+
+          <!-- Github -->
+          <a
+            class="btn btn-lg text-white btn-floating m-2 logo"
+            style="background-color: #333333;"
+            href="https://github.com/Kankitsuuu"
+            role="button"
+            ><i class="fab fa-github"></i
+          ></a>
+          <!-- Telegram -->
+          <a
+            class="btn btn-lg text-white btn-floating m-2 logo"
+            style="background-color: #34ace0;"
+            href="https://t.me/kankitsuuu"
+            role="button"
+            ><i class="fas fa-paper-plane fa-lg"></i
+          ></a>
+        </section>
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        Created by Kankitsuuu
+      </div>
+      <!-- Copyright -->
+    </footer>
+{% endblock footer %}

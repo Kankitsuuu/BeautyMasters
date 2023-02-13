@@ -2,16 +2,55 @@
 {%  load static %}
 
 {% block content %}
-<form method="post" class = 'contact-form' >
-        {% csrf_token %}
-            <div class="form-error">{{ form.non_field_errors }}</div>
-            {% for f in form %}
-                <label>{{ f.label }}</label>
-                <p class="form-line">{{f}}</p>
-                <div class="form-error">{{ f.errors }}</div>
-            {% endfor %}
-        <button type="submit" class="btn btn-danger text-dark" >
-            Зберегти
-        </button>
-    </form>
+<form method="post" name="contact-form">
+{% csrf_token %}
+<div class="form-error">{{ form.non_field_errors }}</div>
+<!-- Wallpaper -->
+<div
+class="bg-image text-center"
+style="
+  background-image: url({{ page.background.url}});
+  background-attachment: fixed;
+  min-height: 100vh;
+"
+>
+    <div class = "container text-center mt-5">
+        <a href="#" class ="btn btn-lg text-white btn-primary mt-5 logo">
+                Змінити бекграунд
+        </a>
+    </div>
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <div class="text-light ">
+            <div class = "row">
+                <div class = "align-items-center col-lg-12" style="width: 450px">
+                    <h1>Привіт, мене звати</h1>
+                </div>
+                <div class = "w-25 col-lg-6">
+                    <div class = "form-outline mb-4" style="max-width: 350px">
+                        {{ form.firstname }}
+                    </div>
+                </div>
+                <div class = "w-25 col-lg-6">
+                    <div class = "form-outline mb-4" style="max-width: 350px">
+                        {{ form.lastname }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-error">{{ form.firstname.errors }}</div>
+            <div class="form-error">{{ form.lastname.errors }}</div>
+        </div>
+    </div>
+</div>
+<!-- Block about -->
+<!-- old form -->
+<div class="form-error">{{ form.non_field_errors }}</div>
+{% for f in form %}
+    <label>{{ f.label }}</label>
+    <p class="form-line">{{f}}</p>
+    <div class="form-error">{{ f.errors }}</div>
+{% endfor %}
+<button type="submit" class="btn btn-danger text-dark" >
+    Зберегти
+</button>
+</form>
 {%  endblock content %}

@@ -11,12 +11,9 @@ from .filters import MastersFilter
 from .utils import DataMixin
 from .forms import *
 
+
 # Create your views here.
-
-
-class HomeView(LoginRequiredMixin, DataMixin, View):
-    login_url = '/login/'
-    redirect_field_name = 'redirect_to'
+class HomeView(DataMixin, View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -64,7 +61,7 @@ class RegisterUser(DataMixin, CreateView):
             'firstname': form.cleaned_data['first_name'],
             'lastname': form.cleaned_data['last_name'],
             'user': user,
-            'slug': form.cleaned_data['username']
+            'slug': form.cleaned_data['username'].lower()
         }
         # save user data
         user.email = form.cleaned_data['email']
@@ -96,6 +93,7 @@ class ChangePage(LoginRequiredMixin, DataMixin, View):
     template_name = 'masters_app/change_page.html'
 
     def dispatch(self, request,  *args, **kwargs):
+        print(args, kwargs, request)
         page = get_object_or_404(Page, slug=kwargs['page_slug'])
         if request.method == 'POST':
             form = ChangePageForm(request.POST)
@@ -103,7 +101,6 @@ class ChangePage(LoginRequiredMixin, DataMixin, View):
                 try:
                     page.firstname = form.cleaned_data['firstname']
                     page.lastname = form.cleaned_data['lastname']
-                    page.slug = form.cleaned_data['slug']
                     page.about = form.cleaned_data['about']
                     page.category = form.cleaned_data['category']
                     page.city = form.cleaned_data['city']
@@ -116,20 +113,13 @@ class ChangePage(LoginRequiredMixin, DataMixin, View):
             initial = {
                 'firstname': page.firstname,
                 'lastname': page.lastname,
-                'slug': page.slug,
                 'about': page.about,
                 'category': page.category,
                 'city': page.city
             }
             form = ChangePageForm(initial=initial)
-            context = self.get_user_context(form=form, title='Змінити сторінку')
+            context = self.get_user_context(form=form, title='Змінити сторінку', page=page)
             return render(request, self.template_name, context)
-
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(self.get_user_context(title="Налаштування сторінки"))
-        return context
 
 
 class SearchView(DataMixin, View):
@@ -141,3 +131,6 @@ class SearchView(DataMixin, View):
         context.update({'filter': page_filter})
         return render(request, 'masters_app/search.html', context)
 
+
+def account_settings(request, page_slug):
+    return HttpResponse('Account settings')

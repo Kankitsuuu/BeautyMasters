@@ -3,7 +3,7 @@
 
 {% block content %}
     <div
-        class="p-5 text-center bg-image "
+        class="p-5 text-center bg-image"
         style="
           background-image: url({% static 'masters_app/img/header-image.jpg' %});
           background-attachment: fixed;
@@ -11,13 +11,63 @@
         "
     >
         <div class="mask gradient-custom" style="background-color: rgba(0, 0, 0, 0.6);">
-          <div class="d-flex justify-content-center align-items-center h-100">
-            <div class="text-white">
-              <h1 class="mb-3 main-title">Ласкаво просимо на Beauty Masters!</h1>
-              <a class="btn btn-outline-light text-light" href="{% url 'login' %} ">Увійти</a>
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <div class="container w-75 text-white">
+                    <h1 class="mb-2 main-title">Ласкаво просимо на Beauty Masters!</h1>
+                    <h2>Тут ти зможеш створити свою власну сторінку та показати свої роботи.
+                      Або ж переглядай сторінки інших користувачів.
+                    </h2>
+                    <p class = "mt-2" style="font-size: 20px;">Ще не маєш власної сторінки?</p>
+                    <a class="btn btn-outline-light main-btn" href="{% url 'register' %}">Створити</a>
+                    <p class="my-2">aбо ж</p>
+                    <a class="btn btn-outline-light main-btn" href="{% url 'login' %}">Увійти</a>
+                </div>
             </div>
-          </div>
         </div>
     </div>
-
 {% endblock content %}
+
+{%  block footer %}
+     <!-- Footer -->
+    <footer class="bg-transparent text-center text-white fixed-bottom">
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+        <!-- Section: Social media -->
+        <section class="mb-4">
+          <!-- Instagram -->
+          <a
+            class="btn btn-lg text-white btn-floating m-2 logo"
+            style="background-color: #c64652;"
+            href="https://www.instagram.com/kankitsuuu/"
+            role="button"
+            ><i class="fab fa-instagram"></i
+          ></a>
+
+          <!-- Github -->
+          <a
+            class="btn btn-lg text-white btn-floating m-2 logo"
+            style="background-color: #333333;"
+            href="https://github.com/Kankitsuuu"
+            role="button"
+            ><i class="fab fa-github"></i
+          ></a>
+          <!-- Telegram -->
+          <a
+            class="btn btn-lg text-white btn-floating m-2 logo"
+            style="background-color: #34ace0;"
+            href="https://t.me/kankitsuuu"
+            role="button"
+            ><i class="fas fa-paper-plane fa-lg"></i
+          ></a>
+        </section>
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        Created by Kankitsuuu
+      </div>
+      <!-- Copyright -->
+    </footer>
+{%  endblock footer %}
