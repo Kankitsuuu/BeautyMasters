@@ -1,20 +1,20 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 # Create your models here.
 class Page(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User', unique=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='User', unique=True)
     firstname = models.CharField(max_length=255, verbose_name='Name')
     lastname = models.CharField(max_length=255, verbose_name='Surname')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-    category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Category', null=True)
-    city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name='City', null=True)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Category', blank=True, null=True)
+    city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name='City', blank=True, null=True)
     about = models.TextField(verbose_name='About', blank=True)
     user_photo = models.ImageField(upload_to="photos/users/%Y/", verbose_name='Photo',
                                    default='photos/default/user_photo.jpg')
-    tg_id = models.IntegerField(unique=True, verbose_name='Telegram ID', null=True)
+    tg_id = models.IntegerField(unique=True, verbose_name='Telegram ID', blank=True, null=True)
     background = models.ImageField(upload_to="wallpapers/users/%Y", verbose_name="Background",
                                    default='wallpapers/default/page_background.jpg')
 
@@ -61,6 +61,7 @@ class Album(models.Model):
 class Work(models.Model):
     album = models.ForeignKey('Album', on_delete=models.CASCADE, verbose_name='Album')
     photo = models.ImageField(upload_to="photos/works/%Y/%m/%d/", verbose_name='Photo')
+    description = models.CharField(max_length=255, verbose_name='Work description', blank=True)
     add_time = models.DateTimeField(auto_now_add=True, verbose_name='Add time')
 
     class Meta:

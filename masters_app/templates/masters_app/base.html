@@ -22,69 +22,85 @@
   <body>
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white">
-          <div class="container w-50 me-auto">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="#navbarExample01"
-            aria-controls="navbarExample01"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="fas fa-bars"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarExample01">
-              <a class = "nav-item active text-dark" href="{% url 'home' %}">
-                  <i class="fas fa-home fa-lg me-2 home-logo"></i>
-              </a>
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
-                  {% for m in menu %}
-                      <li class="nav-item active">
-                        <a class="nav-link navigation-link " aria-current="page" href="{% url m.url_name %}">{{ m.title }}</a>
-                      </li>
-                  {% endfor %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <!-- Container wrapper -->
+          <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand me-2" href="{% url 'home' %}">
+              <i class="fas fa-home"></i>
+            </a>
+
+            <!-- Toggle button -->
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-mdb-toggle="collapse"
+              data-mdb-target="#navbarButtonsExample"
+              aria-controls="navbarButtonsExample"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarButtonsExample">
+              <!-- Left links -->
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% for m in menu %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url m.url_name %}">{{ m.title }}</a>
+                    </li>
+                {%  endfor %}
               </ul>
-          </div>
-        </div>
-        <!-- Right Links-->
-          <div class="d-flex align-items-center w-auto me-5">
+              <!-- Left links -->
+
+              <div class="d-flex align-items-center">
                 {% if request.user.is_authenticated %}
-                    <p class = "nav-link text-dark m-2">Увійшов як <span style=" color: #01579b;">{{ request.user.username }}</span></p>
+                  <!--Dropdown -->
                     <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-mdb-toggle="dropdown"
-                    aria-expanded="false"
+                      class="nav-link dropdown-toggle d-flex align-items-center"
+                      href="#"
+                      id="navbarDropdownMenuLink"
+                      role="button"
+                      data-mdb-toggle="dropdown"
+                      aria-expanded="false"
                     >
-                    Іконка юзера
+                      <img
+                        src="{{ request.user.page.user_photo.url }}"
+                        class="rounded-circle"
+                        height="22"
+                        alt="User photo mini"
+                        loading="lazy"
+                      />
                     </a>
-                    <!-- Dropdown menu -->
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a class="dropdown-item" href="{% url 'logout' %}">Вийти</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'settings' user.username|lower %}">Налаштування сторінки</a>
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <li>
+                        <a class="dropdown-item" href="{% url 'settings' user.page.slug %}">Редагувати сторінку</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'account' user.page.slug %}">Налаштування аккаунта</a>
+                      </li>
+                      <li>
+                          <hr class="dropdown-divider" />
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Вийти</a>
+                      </li>
                     </ul>
                 {% else %}
-                    <a type="button" class="btn btn-link px-3 me-2" href="{% url 'login' %}">
-                    Увійти
-                    </a>
-                    <a type="button" class="btn btn-primary me-3" href="{% url 'register' %}">
-                      Зареєструватися
-                    </a>
-                {% endif %}
+                <a class="btn btn-link px-3 me-2" href="{% url 'login' %}">
+                  Увійти
+                </a>
+                <a class="btn btn-primary me-3" href="{% url 'register' %}">
+                  Зареєструватися
+                </a>
+                {%  endif %}
+              </div>
+            </div>
+            <!-- Collapsible wrapper -->
           </div>
-        <!-- Right Links-->
+          <!-- Container wrapper -->
         </nav>
         <!-- Navbar -->
     </header>

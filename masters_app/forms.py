@@ -22,16 +22,28 @@ class LoginUserForm(AuthenticationForm):
 class ChangePageForm(forms.ModelForm):
     class Meta:
         model = Page
-        fields = ['firstname', 'lastname', 'category', 'city', 'about']
+        fields = ['firstname', 'lastname', 'category', 'user_photo', 'background', 'city', 'about']
         labels = {'firstname': "Ім'я:",
                   'lastname': 'Прізвище:',
                   'about': 'Про мене:',
-                  'category': 'Категорія',
-                  'city': 'Місто',
+                  'category': 'Діяльність:',
+                  'city': 'Місто:',
                   }
         widgets = {
-            'firstname': forms.TextInput(attrs={'class': 'form-control bg-transparent text-light fs-1'}),
-            'lastname': forms.TextInput(attrs={'class': 'form-control bg-transparent text-light fs-1'}),
-            'about': forms.Textarea(attrs={'cols': 50, 'rows': 10}),
+            'firstname': forms.TextInput(attrs={'class': 'form-control bg-transparent text-light fs-2'}),
+            'lastname': forms.TextInput(attrs={'class': 'form-control bg-transparent text-light fs-2'}),
+            'about': forms.Textarea(attrs={'cols': 100, 'rows': 15}),
 
+        }
+
+
+class EditAccountForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control bg-transparent'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control bg-transparent'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control bg-transparent'}),
+            'email': forms.TextInput(attrs={'class': 'form-control bg-transparent'}),
         }

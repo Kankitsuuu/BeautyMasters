@@ -59,3 +59,13 @@ font-size: 50px;
     background-color: whitesmoke;
     color: black;
 }
+/* Pagination */
+.pagination-link:hover{
+    background-color: #386bc0;
+}
+.pagination-link-active{
+    background-color: #386bc0;
+}
+.pagination-link-active:hover{
+    background-color: #386bc0;
+}

@@ -1,0 +1,32 @@
+{%  extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+<!-- Wallpaper -->
+<div
+class="bg-image text-center"
+style="
+  background-image: url({{ page.background.url}});
+  background-attachment: fixed;
+  min-height: 100vh;
+"
+>
+    <div class="container-md align-items-center" style="margin-top: 10%; width: 500px;">
+        <div class="text-dark">
+            <div class = "card text-center pb-5 mt-3">
+                <div class = "card-header fs-3">Налаштування акаунту</div>
+                <form method="post" name="contact-form">
+                    {% csrf_token %}
+                    <div class="form-error">{{ form.non_field_errors }}</div>
+                    {%  for f in form %}
+                       <label>{{ f.label }}</label>
+                       <p class="form-line my-4 ">{{f}}</p>
+                       <div class="form-error">{{ f.errors }}</div>
+                    {%  endfor %}
+                    <button class="btn btn-primary" type="submit">Зберегти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

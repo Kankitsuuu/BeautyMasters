@@ -1,3 +1,5 @@
+from django.core.paginator import Paginator
+
 from .models import *
 
 menu = [
@@ -12,3 +14,12 @@ class DataMixin:
         context = kwargs
         context['menu'] = menu
         return context
+
+    @staticmethod
+    def get_paginator(request, model, count, **kwargs):
+        print(kwargs)
+        m = model.objects.filter(**kwargs)
+        paginator = Paginator(m, count)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return page_obj

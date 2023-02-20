@@ -1,0 +1,86 @@
+{% extends 'masters_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div
+class="p-5 bg-image text-center"
+style="
+  background-image: url({{ page.background.url}});
+  background-attachment: fixed;
+  min-height: 100vh;
+"
+>
+    {% if page_obj %}
+    <h1 class="text-light mb-3">{{ title }}</h1>
+    <div class = 'row mt-2 gy-5'>
+    <!-- Works -->
+    {% for work in page_obj %}
+        <div class = "col-lg-3">
+            <!-- Card -->
+            <div class="card" style=" height: 300px; max-width: 400px;">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light" style="height: 250px;">
+                <img alt="work-photo"
+                 src="{{ work.photo.url }}"
+                 style="height: 250px;"
+                >
+                <a href="{% url 'work' page.slug work.pk %}">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{ work.description|truncatechars:50 }}</p>
+              </div>
+            </div>
+            <!-- Card -->
+        </div>
+    {% endfor %}
+    <!-- Works -->
+    </div>
+    {% else %}
+        <h1 class="text-light mb-10">Упс, альбом поки що порожній</h1>
+    {% endif %}
+    <hr class="hr my-3">
+    <a class="btn btn-primary text-center" href="{% url 'show_page' page.slug %}">Повернутися</a>
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation">
+          <ul class="pagination  justify-content-center mt-5 align-items-end">
+            {% if page_obj.has_previous %}
+            <li class="page-item mx-1">
+                <a class="page-link text-light pagination-link"  href="?page={{ page_obj.previous_page_number }}">Попередня</a>
+            </li>
+            {%  else %}
+                <li class="page-item mx-1">
+                  <p class="page-link text-light pagination-link m-0 bg-dark bg-opacity-75">Попередня</p>
+                </li>
+            {% endif %}
+            {% for p in page_obj.paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <li class="page-item mx-1">
+                        <p class="page-link text-light pagination-link-active m-0 border border-light" href="?page={{ p }}">{{ p }}</p>
+                    </li>
+                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+                    <li class="page-item mx-1">
+                        <a class="page-link text-light pagination-link" href="?page={{ p }}">{{ p }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="page-item mx-1">
+                  <a class="page-link text-light pagination-link" href="?page={{ page_obj.next_page_number }}">Наступна</a>
+              </li>
+            {% else %}
+                <li class="page-item mx-1">
+                  <p class="page-link text-light pagination-link m-0 bg-dark bg-opacity-75">Наступна</p>
+                </li>
+            {% endif %}
+          </ul>
+        </nav>
+    {% endif %}
+    <!-- Pagination -->
+</div>
+
+{% endblock content %}
+
+{% block footer %}
+{% endblock footer %}

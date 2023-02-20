@@ -1,6 +1,7 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse_lazy
@@ -83,6 +84,7 @@ class PageView(DataMixin, DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = context['page']
+        context['albums'] = Album.objects.filter(page=context['page'])
         context.update(self.get_user_context())
         return context
 
@@ -93,33 +95,17 @@ class ChangePage(LoginRequiredMixin, DataMixin, View):
     template_name = 'masters_app/change_page.html'
 
     def dispatch(self, request,  *args, **kwargs):
-        print(args, kwargs, request)
         page = get_object_or_404(Page, slug=kwargs['page_slug'])
         if request.method == 'POST':
-            form = ChangePageForm(request.POST)
+            form = ChangePageForm(instance=request.user.page, data=request.POST, files=request.FILES)
             if form.is_valid():
-                try:
-                    page.firstname = form.cleaned_data['firstname']
-                    page.lastname = form.cleaned_data['lastname']
-                    page.about = form.cleaned_data['about']
-                    page.category = form.cleaned_data['category']
-                    page.city = form.cleaned_data['city']
-                    page.save()
-                    return redirect('home')
-                except Exception as e:
-                    print(e)
-                    form.add_error(None, 'Record change error')
+                form.save()
+                return redirect('home')
+
         else:
-            initial = {
-                'firstname': page.firstname,
-                'lastname': page.lastname,
-                'about': page.about,
-                'category': page.category,
-                'city': page.city
-            }
-            form = ChangePageForm(initial=initial)
-            context = self.get_user_context(form=form, title='Змінити сторінку', page=page)
-            return render(request, self.template_name, context)
+            form = ChangePageForm(instance=request.user.page)
+        context = self.get_user_context(form=form, title='Змінити сторінку', page=page)
+        return render(request, self.template_name, context)
 
 
 class SearchView(DataMixin, View):
@@ -132,5 +118,44 @@ class SearchView(DataMixin, View):
         return render(request, 'masters_app/search.html', context)
 
 
-def account_settings(request, page_slug):
-    return HttpResponse('Account settings')
+class EditAccount(LoginRequiredMixin, DataMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'home'
+    template_name = 'masters_app/edit_account.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        page = get_object_or_404(Page, slug=kwargs['page_slug'])
+        if request.method == 'POST':
+            form = EditAccountForm(instance=request.user, data=request.POST)
+            if form.is_valid():
+                page.firstname = form.cleaned_data['first_name']
+                page.lastname = form.cleaned_data['last_name']
+                page.slug = form.cleaned_data['username'].lower()
+                page.save()
+                form.save()
+                return redirect('home')
+        else:
+            form = EditAccountForm(instance=request.user)
+        context = self.get_user_context(form=form, title='Налаштування аккаунта', page=page)
+        return render(request, self.template_name, context)
+
+
+class AlbumView(DataMixin, View):
+    def get(self, request, *args, **kwargs):
+        page = get_object_or_404(Page, slug=kwargs['page_slug'])
+        album = get_object_or_404(Album, pk=kwargs['album_id'])
+        # paginator
+        page_obj = self.get_paginator(request, Work, 8, album=album)
+
+        context = self.get_user_context(title=f'{album.name}',
+                                        page=page,
+                                        page_obj=page_obj
+                                        )
+
+        return render(request, 'masters_app/album.html', context)
+
+
+def work_view(request, page_slug, work_id):
+    return HttpResponse(f'Work place {page_slug}, {work_id}')
+
+
