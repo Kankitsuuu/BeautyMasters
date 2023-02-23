@@ -53,6 +53,8 @@ class Album(models.Model):
     class Meta:
         verbose_name = 'Album'
         verbose_name_plural = 'Albums'
+        default_related_name = 'album'
+        ordering = ['-create_time']
 
     def __str__(self):
         return self.name
@@ -67,6 +69,10 @@ class Work(models.Model):
     class Meta:
         verbose_name = 'Work'
         verbose_name_plural = 'Works'
+        ordering = ['-add_time']
+
+    def get_absolute_url(self):
+        return reverse('work', kwargs={'work_id': self.pk})
 
 
 class City(models.Model):
@@ -90,7 +96,7 @@ class Link(models.Model):
         verbose_name_plural = 'Links'
 
     def __str__(self):
-        return self.link_type
+        return str(self.link_type)
 
 
 class LinkType(models.Model):

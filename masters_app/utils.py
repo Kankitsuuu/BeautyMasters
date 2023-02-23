@@ -17,7 +17,6 @@ class DataMixin:
 
     @staticmethod
     def get_paginator(request, model, count, **kwargs):
-        print(kwargs)
         m = model.objects.filter(**kwargs)
         paginator = Paginator(m, count)
         page_number = request.GET.get('page')

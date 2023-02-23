@@ -69,3 +69,15 @@ font-size: 50px;
 .pagination-link-active:hover{
     background-color: #386bc0;
 }
+/* Photo controls */
+.custom-control{
+    color: black;
+}
+.custom-control:hover{
+    color: red;
+}
+
+/* Links */
+.link-icon:hover{
+    scale: 1.2;
+}

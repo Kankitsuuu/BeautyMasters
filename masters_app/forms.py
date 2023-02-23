@@ -47,3 +47,14 @@ class EditAccountForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control bg-transparent'}),
             'email': forms.TextInput(attrs={'class': 'form-control bg-transparent'}),
         }
+
+
+class LinkForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['link_type'].empty_label = 'Тип посилання'
+
+    class Meta:
+        model = Link
+        fields = ('link_type', 'url')
+

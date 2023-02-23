@@ -1,0 +1,50 @@
+{%  extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+    <div
+        class="p-5 bg-image text-center"
+        style="
+              background-image: url({{ page.background.url}});
+              background-attachment: fixed;
+              min-height: 100vh;
+            "
+    >
+        <div class = "container-md align-items-center" style="width: 500px">
+            <div class = "card text-center pb-5 mt-3">
+                <div class = "card-header fs-3">Мої посилання</div>
+                    <form name="edit-link-form"  method="post">
+                    {% csrf_token %}
+                    {% for l in links %}
+                    <p>{{ l }}: {{ l.url }}
+                    <!-- Edit button-->
+                    <button style="background-color: transparent; border: none;" type="submit" value="{{ l.pk }}" name="_edit">
+                            <i class="far fa-edit text-primary"></i>
+                    </button>
+                    <!-- Delete button-->
+                    <button style="background-color: transparent; border: none;" type="submit" value="{{ l.pk }}" name="_delete">
+                            <i class="fas fa-times text-danger"></i>
+                    </button>
+                    </p>
+                    {% endfor %}
+                        <p class="my-2">
+                            <button class="btn btn-success" href="#" name="_add">Додати</button>
+                        </p>
+                    </form>
+                    {% if form %}
+                        <form name="add-link-form " method="post">
+                        {% csrf_token %}
+                        <p>{{ form.link_type }}</p>
+                        <p>{{ form.url }}</p>
+                        {% if mark %}
+                            <button type="submit" class="btn btn-primary" name="_save" value="{{ mark }}">Зберегти</button>
+                        {%  else %}
+                            <button type="submit" class="btn btn-primary" name="_add_link">Додати посилання</button>
+                        {% endif %}
+                        </form>
+                    {% endif %}
+
+            </div>
+        </div>
+    </div>
+{%  endblock content %}

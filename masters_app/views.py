@@ -85,6 +85,7 @@ class PageView(DataMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = context['page']
         context['albums'] = Album.objects.filter(page=context['page'])
+        context['links'] = Link.objects.filter(page=context['page'])
         context.update(self.get_user_context())
         return context
 
@@ -155,7 +156,92 @@ class AlbumView(DataMixin, View):
         return render(request, 'masters_app/album.html', context)
 
 
-def work_view(request, page_slug, work_id):
-    return HttpResponse(f'Work place {page_slug}, {work_id}')
+class WorkView(DataMixin, DetailView):
+    model = Work
+    pk_url_kwarg = 'work_id'
+    template_name = 'masters_app/work.html'
+    context_object_name = 'work'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        print(kwargs)
+        context = super().get_context_data(**kwargs)
+        album = context['work'].album
+        page = album.page
+        queryset = self.model.objects.filter(album=album)
+
+        # finding prev and next work
+        prev_work, next_work = None, None
+        found = False
+        for work in queryset:
+            if found:
+                next_work = work.pk
+                break
+            if work == context['work']:
+                found = True
+                continue
+            prev_work = work.pk
+
+        context.update(self.get_user_context(title=album,
+                                             queryset=queryset,
+                                             page=page,
+                                             prev_work=prev_work,
+                                             next_work=next_work))
+
+        return context
+
+
+class LinksView(LoginRequiredMixin, DataMixin, ListView):
+    def dispatch(self, request, *args, **kwargs):
+        page = get_object_or_404(Page, slug=kwargs['page_slug'])
+        links = Link.objects.filter(page=page)
+        title = f'{page} links'
+        context = self.get_user_context(page=page,
+                                        links=links,
+                                        title=title)
+        if request.method == 'POST':
+
+            if '_edit' in request.POST:
+                link = Link.objects.get(pk=request.POST['_edit'])
+                form = LinkForm(instance=link)
+                context.update(form=form, mark=request.POST['_edit'])
+
+            elif '_save' in request.POST:
+                link = Link.objects.get(pk=request.POST['_save'])
+                form = LinkForm(instance=link, data=request.POST)
+                if form.is_valid():
+                    form.save()
+                else:
+                    print('Error')
+                return redirect('links', page_slug=page.slug)
+
+            elif '_add_link' in request.POST:
+                form = LinkForm(data=request.POST)
+                if form.is_valid():
+                    Link.objects.create(page=page,
+                                        link_type=form.cleaned_data['link_type'],
+                                        url=form.cleaned_data['url'])
+                    return redirect('links', page_slug=page.slug)
+                else:
+                    print(form.data)
+                    print(form.cleaned_data)
+                    print('Error')
+
+            elif '_add' in request.POST:
+                form = LinkForm(initial={'page': page})
+                context.update(form=form)
+
+            elif '_delete' in request.POST:
+                print(request.POST)
+                link = Link.objects.get(pk=request.POST['_delete'])
+                link.delete()
+                return redirect('links', page_slug=page.slug)
+
+        return render(request, 'masters_app/links.html', context)
+
+
+
+
+
+
 
 

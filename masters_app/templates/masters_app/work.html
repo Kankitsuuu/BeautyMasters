@@ -1,0 +1,43 @@
+{%  extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+<div
+class="p-5 bg-image text-center"
+style="
+  background-image: url({{ work.album.page.background.url}});
+  background-attachment: fixed;
+  min-height: 100vh;
+"
+>
+    <div class="container-lg text-center align-items-center m-auto">
+        <div class="card m-auto" style="width: 50vw;">
+          <div class = "bg-image align-items-end"
+               style="background-image: url({{ work.photo.url }});
+                      height: 50vh;"
+          >
+          {% if prev_work %}
+            <a class = "carousel-control-prev custom-control" href="{% url 'work' prev_work %}">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+          {% endif %}
+          {% if next_work %}
+            <a class = "carousel-control-next custom-control" href="{% url 'work' next_work %}">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+          {% endif %}
+          </div>
+          <div class="card-body">
+            <p class="card-text fs-5">{{ work.description }}</p>
+          </div>
+          <div class="text-center">
+              <a class="btn-close me-1 fs-5" href="{% url 'album' page.slug title.pk %}" aria-label="Close"></a>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
