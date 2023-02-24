@@ -10,7 +10,10 @@ urlpatterns = [
     path('login/', views.LoginUser.as_view(), name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('search/', views.SearchView.as_view(), name='search'),
-    path('<slug:page_slug>/albums/<int:album_id>', views.AlbumView.as_view(), name='album'),
+    path('<slug:page_slug>/albums/<int:album_id>', views.AlbumContentView.as_view(), name='album'),
     path('work/<int:work_id>', views.WorkView.as_view(), name='work'),
     path('<slug:page_slug>/links/', views.LinksView.as_view(), name='links'),
+    path('<slug:page_slug>/albums/', views.AlbumsView.as_view(), name='albums'),
+    path('<slug:page_slug>/albums/<int:album_id>/edit/', views.AlbumEditView.as_view(), name='album-edit'),
+    path('<slug:page_slug>/albums/add/', views.AlbumAddView.as_view(), name='album-add'),
 ]

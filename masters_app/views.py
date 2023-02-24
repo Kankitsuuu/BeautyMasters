@@ -57,7 +57,6 @@ class RegisterUser(DataMixin, CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        print(user)
         page_data = {
             'firstname': form.cleaned_data['first_name'],
             'lastname': form.cleaned_data['last_name'],
@@ -141,8 +140,9 @@ class EditAccount(LoginRequiredMixin, DataMixin, View):
         return render(request, self.template_name, context)
 
 
-class AlbumView(DataMixin, View):
+class AlbumContentView(DataMixin, View):
     def get(self, request, *args, **kwargs):
+
         page = get_object_or_404(Page, slug=kwargs['page_slug'])
         album = get_object_or_404(Album, pk=kwargs['album_id'])
         # paginator
@@ -152,7 +152,6 @@ class AlbumView(DataMixin, View):
                                         page=page,
                                         page_obj=page_obj
                                         )
-
         return render(request, 'masters_app/album.html', context)
 
 
@@ -239,6 +238,88 @@ class LinksView(LoginRequiredMixin, DataMixin, ListView):
         return render(request, 'masters_app/links.html', context)
 
 
+class AlbumsView(DataMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+
+        page = get_object_or_404(Page, slug=kwargs['page_slug'])
+        albums = Album.objects.filter(page=page)
+        links = Link.objects.filter(page=page)
+        title = f'{page}: Альбоми'
+        page_obj = self.get_paginator(request, Album, 3, page=page)
+        context = self.get_user_context(title=title,
+                                        page=page,
+                                        albums=albums,
+                                        links=links,
+                                        page_obj=page_obj)
+        return render(request, 'masters_app/user_albums.html', context)
+
+
+class AlbumAddView(DataMixin, CreateView):
+    form_class = AlbumForm
+    template_name = 'masters_app/album_constructor.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.page = Page.objects.get(slug=kwargs['page_slug'])
+        return super(AlbumAddView, self).dispatch(request, args, kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        print(kwargs)
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_user_context(title="Створення альбому", mark='add'))
+        print(context)
+        return context
+
+    def form_valid(self, form):
+        print('DATA', form.data)
+        print('CLEANED DATA PIC', form.cleaned_data['main_picture'])
+        album_data = {
+            'name': form.cleaned_data['name'],
+            'description': form.cleaned_data['description'],
+            'main_picture': form.cleaned_data['main_picture'],
+            'page': self.page
+        }
+        Album.objects.create(**album_data)
+        return redirect('albums', self.page.slug)
+
+
+class AlbumEditView(DataMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+
+        page = get_object_or_404(Page, slug=kwargs['page_slug'])
+        form = None
+        album_id = kwargs['album_id']
+        title = 'Налаштування альбома'
+
+        context = self.get_user_context(form=form, page=page, title=title, mark='edit')
+
+        # POST
+        if request.method == 'POST':
+            album = get_object_or_404(Album, pk=album_id)
+
+            if '_delete' in request.POST:
+                album.delete()
+                return redirect('albums', page_slug=page.slug)
+
+            form = AlbumForm(instance=album, data=request.POST, files=request.FILES)
+            if form.is_valid():
+                print('DATA:', form.data)
+                print('CLEANED DATA:', form.cleaned_data)
+                form.save()
+                return redirect('albums', page_slug=page.slug)
+            else:
+                print('Error')
+
+        # GET
+        else:
+            album = get_object_or_404(Album, pk=kwargs['album_id'])
+            form = AlbumForm(instance=album)
+            context = self.get_user_context(form=form,
+                                            page=page,
+                                            title=title,
+                                            mark='edit',
+                                            album_header=album.main_picture)
+
+        return render(request, 'masters_app/album_constructor.html', context)
 
 
 

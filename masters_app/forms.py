@@ -22,7 +22,7 @@ class LoginUserForm(AuthenticationForm):
 class ChangePageForm(forms.ModelForm):
     class Meta:
         model = Page
-        fields = ['firstname', 'lastname', 'category', 'user_photo', 'background', 'city', 'about']
+        fields = ('firstname', 'lastname', 'category', 'user_photo', 'background', 'city', 'about')
         labels = {'firstname': "Ім'я:",
                   'lastname': 'Прізвище:',
                   'about': 'Про мене:',
@@ -57,4 +57,15 @@ class LinkForm(forms.ModelForm):
     class Meta:
         model = Link
         fields = ('link_type', 'url')
+
+
+class AlbumForm(forms.ModelForm):
+    class Meta:
+        model = Album
+        fields = ('main_picture', 'name', 'description')
+        labels = {'name': 'Назва альбома',
+                  'main_picture': 'Головне фото'}
+        widgets = {
+            'description': forms.Textarea(attrs={'placeholder': 'Опис альбома', })
+        }
 
