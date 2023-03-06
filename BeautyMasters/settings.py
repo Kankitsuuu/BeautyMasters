@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'masters_app.apps.MastersAppConfig',
+    'django_cleanup.apps.CleanupConfig',  # автоудаление изображений из каталогов при удалении/изменении обьекта модели
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'BeautyMasters.urls'
@@ -95,13 +98,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        # 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'masters_app.validators.CustomMinimumLengthPasswordValidator'
+
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        # 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'masters_app.validators.CustomCommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        # 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'masters_app.validators.CustomNumericPasswordValidator',
     },
 ]
 
@@ -130,3 +137,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Debug toolbar
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+
+INTERNAL_IPS = [
+        "127.0.0.1",
+]
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)

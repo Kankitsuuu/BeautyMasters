@@ -1,10 +1,9 @@
 from django.core.paginator import Paginator
-
 from .models import *
 
 menu = [
         {'title': "Додому", 'url_name': 'home'},
-        {'title': "Зворотній зв'язок", 'url_name': 'home'},
+        {'title': "Пошук майстрів", 'url_name': 'search'},
         ]
 
 
@@ -22,3 +21,4 @@ class DataMixin:
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return page_obj
+

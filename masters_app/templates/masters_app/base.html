@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <!-- Icon -->
+    <link rel="icon" href="{% static 'masters_app/img/main_icon.png' %}" type="image/x-icon" />
     <title>{{ title }}</title>
     <!-- MDB -->
     <link rel="stylesheet" href="{% static "masters_app/css/mdb.min.css" %}"/>
@@ -24,7 +26,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <!-- Container wrapper -->
-          <div class="container">
+          <div class="container d-flex">
             <!-- Navbar brand -->
             <a class="navbar-brand me-2" href="{% url 'home' %}">
               <i class="fas fa-home"></i>
@@ -32,7 +34,7 @@
 
             <!-- Toggle button -->
             <button
-              class="navbar-toggler"
+              class="navbar-toggler mx-0"
               type="button"
               data-mdb-toggle="collapse"
               data-mdb-target="#navbarButtonsExample"
@@ -54,7 +56,6 @@
                 {%  endfor %}
               </ul>
               <!-- Left links -->
-
               <div class="d-flex align-items-center">
                 {% if request.user.is_authenticated %}
                   <!--Dropdown -->
@@ -70,19 +71,19 @@
                         src="{{ request.user.page.user_photo.url }}"
                         class="rounded-circle"
                         height="22"
-                        alt="User photo mini"
+                        alt="User-photo-mini"
                         loading="lazy"
                       />
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       <li>
-                        <a class="dropdown-item" href="{% url 'settings' user.page.slug %}">Редагувати сторінку</a>
+                        <a class="dropdown-item" href="{% url 'settings' %}">Редагувати сторінку</a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="{% url 'account' user.page.slug %}">Налаштування аккаунта</a>
+                        <a class="dropdown-item" href="{% url 'account' %}">Налаштування аккаунта</a>
                       </li>
                       <li>
-                          <a class="dropdown-item" href="{% url 'links' user.page.slug %}">Мої посилання</a>
+                          <a class="dropdown-item" href="{% url 'links' %}">Мої посилання</a>
                       </li>
                       <li>
                           <a class="dropdown-item" href="{% url 'albums' user.page.slug %}">Мої альбоми</a>

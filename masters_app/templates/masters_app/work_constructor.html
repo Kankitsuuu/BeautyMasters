@@ -1,0 +1,53 @@
+{% extends 'masters_app/base.html' %}
+{%  load static %}
+
+{% block content %}
+<div
+    class="p-5 bg-image text-center"
+    style="
+      background-image: url({{ page.background.url}});
+      background-attachment: fixed;
+      min-height: 100vh;
+    "
+>
+
+    <div class="container-lg text-center  align-items-center m-auto">
+        <div class="card m-auto" style="width: 700px;">
+            <div class="card-header">
+            {% if mark == 'edit' %}
+                <div class="d-flex justify-content-center">
+                    <h3 >Змінити роботу</h3>
+                    <a class="btn btn-danger btn-rounded align-self-end" href="{% url 'album' album.pk %}">
+                            <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                <hr class="hr hr-blurry">
+                    <div class = "bg-image"
+                         style="background-image: url({{ form.photo.value.url }});
+                                height: 300px"
+                    >
+                    </div>
+            {% else %}
+                <div class="d-flex justify-content-center">
+                    <h3>Додати роботу</h3>
+                    <a class="btn btn-danger btn-rounded align-self-end" href="{% url 'album' album.pk %}">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            {%  endif %}
+            </div>
+            <div class="card-body">
+            <form method="post" name="work-constructor-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>{{ form.photo }}</p>
+                <p>{{ form.description }}</p>
+                <button type="submit" class="btn btn-primary mb-3">Зберегти</button>
+                {% if mark == 'edit' %}
+                    <button type="submit" name="_delete" class="btn btn-danger mb-3">Видалити</button>
+                {%  endif %}
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%  endblock content %}

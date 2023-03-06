@@ -2,13 +2,105 @@
 {%  load static %}
 
 {% block content %}
-<form method="get">
-    {{ filter.form.as_p }}
-    <button type="submit">Шукати</button>
-  </form>
-  <ul>
-  {% for page in filter.qs %}
-    <li>{{ page.firstname }} - {{ page.lastname }}</li>
-  {% endfor %}
-  </ul>
+<!-- Wallpaper -->
+<div
+class="bg-image text-center text-light"
+style="
+        {%  if request.user.is_authenticated %}
+  background-image: url({{ request.user.page.background.url}});
+        {%  else %}
+  background-image: url({% static 'masters_app/img/background.jpg' %});
+        {% endif %}
+  background-attachment: fixed;
+  min-height: 85vh;
+"
+>
+    <div class="d-flex" style="min-height: 85vh;">
+        <div class = 'bg-light border border-5 text-dark'>
+            <!-- Form -->
+            <form method="get" class="mt-5">
+                {% for f in filter.form %}
+
+                    <p class="m-0">{{ f.label }}</p>
+                    <p>{{ f }}</p>
+
+                {% endfor %}
+                <hr class="hr" style="height: 3px;">
+                <button type="submit" name="_search" class = "btn btn-primary">
+                    Шукати <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <!-- Form -->
+        </div>
+        <div class="vw-100 my-5">
+            {% if searched %}
+                <h1>Знайдено сторінок: {{ filter.qs|length }}</h1>
+            {% else %}
+                <h1>Усього сторінок: {{ filter.qs|length }}</h1>
+            {% endif %}
+            <!-- Results -->
+            <div class="row mx-5">
+            {% for page in filter.qs %}
+                <div class="col-xxl-3 col-xl-4 col-lg-6 gx-2 gy-3">
+                    <div class="card mx-auto" style="height: 300px; max-width: 270px;">
+                        <div class="card-header">
+                            <a href="{% url 'show_page' page.slug %}">
+                                <img src="{{ page.user_photo.url }}" style="max-height: 100px" class="rounded-circle " alt="user-photo">
+                            </a>
+                        </div>
+                        <div class="card-body text-dark">
+                            <p class="my-0">{{ page }}</p>
+                            <p class="my-2">Місто: {{ page.city }}</p>
+                            <p class="my-2">Діяльність: {{ page.category }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <!-- End Results -->
+        </div>
+    </div>
+</div>
 {% endblock content %}
+
+{%  block footer %}
+     <!-- Footer -->
+    <footer class="bg-dark text-center text-white">
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+        <!-- Section: Social media -->
+        <section class="mb-4">
+          <!-- Instagram -->
+          <a
+            class="btn btn-lg btn-outline-light btn-floating m-2 logo"
+            href="https://www.instagram.com/kankitsuuu/"
+            role="button"
+            ><i class="fab fa-instagram"></i
+          ></a>
+
+          <!-- Github -->
+          <a
+            class="btn btn-lg btn-outline-light btn-floating m-2 logo"
+            href="https://github.com/Kankitsuuu"
+            role="button"
+            ><i class="fab fa-github"></i
+          ></a>
+          <!-- Telegram -->
+          <a
+            class="btn btn-lg btn-outline-light btn-floating m-2 logo"
+            href="https://t.me/kankitsuuu"
+            role="button"
+            ><i class="fas fa-paper-plane fa-lg"></i
+          ></a>
+        </section>
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        Created by Kankitsuuu
+      </div>
+      <!-- Copyright -->
+    </footer>
+{%  endblock footer %}

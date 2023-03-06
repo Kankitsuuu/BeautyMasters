@@ -1,4 +1,5 @@
 {% extends 'masters_app/base.html' %}
+{% load masters_tags %}
 {%  load static %}
 
 {% block content %}
@@ -20,6 +21,7 @@
             </a>
         </div>
     </div>
+
 </div>
 <!-- Block about -->
 <a id="about"></a>
@@ -44,22 +46,21 @@
 </div>
 <!-- Block works -->
 <a id="works"></a>
-<div class ="container text-center mt-4">
+<div class ="container-md text-center mt-4">
     {% if albums %}
     <h1>Мої роботи</h1>
     <!-- Albums -->
-    <div class="row mt-2 mb-8 gy-5">
+    <div class="row mt-2 mb-8 gy-5 justify-content-center align-items-center">
         {% for album in albums %}
-        <div class="col-md-4 mx-auto h-auto">
+        <div class="col-xl-6 col-xxl-4 gx-5 h-auto">
             <!-- Album card -->
-            <div class="card" style = "max-height: 500px; max-width: 400px;">
-              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                <img alt="album-header"
-                     src="{{ album.main_picture.url }}"
-                     class="img-fluid"
-                     style="max-width: 400px;"
-                />
-                <a href="{% url 'album' page.slug album.pk %}">
+            <div class="card mx-auto" style = "height: 500px; max-width: 400px;">
+              <div class="bg-image hover-overlay ripple"
+                   data-mdb-ripple-color="light"
+                   style="background-image: url({{ album.main_picture.url }});
+                          height: 390px;"
+              >
+                <a href="{% url 'album' album.pk %}">
                   <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                 </a>
               </div>
@@ -67,12 +68,17 @@
                 <h5 class="card-title">{{ album.name }}</h5>
                 <hr class="hr-blurry">
                 <p class="card-text">{{ album.description }}</p>
-                <a href="{% url 'album' page.slug album.pk %}" class="btn btn-primary">Переглянути</a>
+                <a href="{% url 'album' album.pk %}" class="btn btn-primary">
+                    Переглянути <i class="fas fa-eye"></i>
+                </a>
               </div>
             </div>
             <!-- Album card -->
         </div>
         {% endfor %}
+        <p class="text-center">
+            <a class="btn btn-link btn-outline-dark text-dark" href="{% url 'albums' page.slug %}">Переглянути усі альбоми</a>
+        </p>
     </div>
     {% else %}
     <h1 class="mb-10">Користувач поки що не додав роботи</h1>
@@ -119,30 +125,6 @@
 {% endblock content %}
 
 {% block footer %}
-<!-- Footer -->
-<footer class="bg-dark text-center text-white" id="#contacts">
-  <!-- Grid container -->
-    <div class="container p-4 pb-0">
-    <!-- Section: Social media -->
-        <section class="mb-4">
-        {% for l in links %}
-            <!-- Personal link -->
-            <a
-            class="btn btn-lg btn-outline-light btn-floating m-2 logo"
-            href="{{ l.url }}"
-            role="button"
-            ><i class="{{ l.link_type.css_class }}"></i
-          ></a>
-        {% endfor %}
-        </section>
-    <!-- Section: Social media -->
-    </div>
-  <!-- Grid container -->
-  <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        Created by
-        <a class="text-white" href="https://github.com/Kankitsuuu">Kankitsuuu</a>
-    </div>
-  <!-- Copyright -->
-</footer>
+    {% link_footer page %}
+
 {% endblock footer %}

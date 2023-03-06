@@ -70,14 +70,24 @@ font-size: 50px;
     background-color: #386bc0;
 }
 /* Photo controls */
+
 .custom-control{
-    color: black;
+    color: whitesmoke;
 }
 .custom-control:hover{
+    color: #dce775;
+}
+.photo-close-btn{
+    color:whitesmoke;
+}
+.photo-close-btn:hover{
     color: red;
 }
-
 /* Links */
 .link-icon:hover{
     scale: 1.2;
+}
+/* User photo */
+.user-photo-mini:hover{
+    background-color: rgb(0, 0, 0, 0.9);
 }

@@ -27,6 +27,7 @@
                         <div class = "form-outline mb-4" style="max-width: 350px">
                             {{ form.firstname }}
                         </div>
+
                     </div>
                     <div class = "w-25 col-lg-6">
                         <div class = "form-outline mb-4" style="max-width: 350px">
@@ -51,20 +52,24 @@
                     >
                     {{ form.user_photo }}
                 </p>
+                <div class="form-error">{{ form.user_photo.errors }}</div>
                 <p>
                     <label class="me-2">{{ form.city.label }}</label>
                     {{ form.city }}
                 </p>
+                <div class="form-error">{{ form.city.errors }}</div>
                 <p>
                     <label class="me-2">{{ form.category.label }}</label>
                     {{ form.category }}
                 </p>
+                <div class="form-error">{{ form.category.errors }}</div>
                 <button type="submit" class="btn btn-primary text-light logo" >
                     Зберегти
                 </button>
             </div>
             <div class="col-lg-8 col-md-12">
             <p class="text-xl-center">{{ form.about }}</p>
+            <div class="form-error">{{ form.about.errors }}</div>
             </div>
         </div>
         <hr class="hr mt-xxl-5" />

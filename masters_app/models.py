@@ -13,7 +13,7 @@ class Page(models.Model):
     city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name='City', blank=True, null=True)
     about = models.TextField(verbose_name='About', blank=True)
     user_photo = models.ImageField(upload_to="photos/users/%Y/", verbose_name='Photo',
-                                   default='photos/default/user_photo.jpg')
+                                   default='photos/default/user_photo.png')
     tg_id = models.IntegerField(unique=True, verbose_name='Telegram ID', blank=True, null=True)
     background = models.ImageField(upload_to="wallpapers/users/%Y", verbose_name="Background",
                                    default='wallpapers/default/page_background.jpg')

@@ -1,0 +1,27 @@
+<!-- Footer -->
+<footer class="bg-dark text-center text-white" id="#contacts">
+  <!-- Grid container -->
+    <div class="container p-4 pb-0">
+    <!-- Section: Social media -->
+        <section class="mb-4">
+        {% for l in links %}
+            <!-- Personal link -->
+            <a
+            class="btn btn-lg btn-outline-light btn-floating m-2 logo"
+            href="{{ l.url }}"
+            role="button"
+            ><i class="{{ l.link_type.css_class }}"></i
+          ></a>
+        {% endfor %}
+        </section>
+    <!-- Section: Social media -->
+    </div>
+  <!-- Grid container -->
+  <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        Created by
+        <a class="text-white" href="https://github.com/Kankitsuuu">Kankitsuuu</a>
+    </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->

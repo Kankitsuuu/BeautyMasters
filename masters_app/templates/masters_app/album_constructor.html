@@ -10,32 +10,41 @@
               min-height: 100vh;
             "
     >
-        <div class = "container-md align-items-center" style="width: 600px; ">
+        {% if mark == 'add' %}
+            <h1 class="mb-3 text-light">Створення нового альбому</h1>
+        {% else %}
+            <h1 class="mb-3 text-light">Редагування альбому</h1>
+        {% endif %}
+        <div class = "container-md align-items-center" style="width: 500px; ">
             <div class = "card text-center pb-5 mt-3">
                 {%  if mark == 'edit' %}
-                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                    <img alt="album-header"
-                         src="{{ album_header.url }}"
-                         class="img-fluid"
-                         style="max-width: 300px;"
-                    />
+                <div class="bg-image hover-overlay ripple"
+                     data-mdb-ripple-color="light"
+                     style="background-image: url({{ album_header.url }});
+                             height: 300px;"
+                >
                 </div>
                 {% endif %}
-                <form name="album-constructor-form" method="post">
+                <form name="album-constructor-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                    <label>{{ form.main_picture.label }}: </label>
+                    <div class="form-error">{{ form.non_field_errors }}</div>
                     <p>{{ form.main_picture }}</p>
+                    <div class="form-error">{{ form.main_picture.errors }}</div>
                      <div class="card-body">
                         <p><label>{{ form.name.label }}: </label>{{ form.name }}</p>
+                        <div class="form-error">{{ form.name.errors }}</div>
                         <hr class="hr-blurry">
                         <p>{{ form.description }}</p>
+                        <div class="form-error">{{ form.description.errors }}</div>
                      </div>
                     <button type="submit" class="btn btn-success">Зберегти</button>
                     {%  if mark == 'edit' %}
                         <button type="submit" class="btn btn-danger" name="_delete">Видалити</button>
                     {% endif %}
+
                 </form>
             </div>
         </div>
     </div>
+
 {%  endblock content %}
