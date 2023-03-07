@@ -6,6 +6,7 @@ urlpatterns = [
     path('<slug:page_slug>', views.PageView.as_view(), name='show_page'),
     path('page/settings/', views.ChangePage.as_view(), name='settings'),
     path('account/settings/', views.EditAccount.as_view(), name='account'),
+    path('account/password-change/', views.PasswordChangeView.as_view(), name='password-change'),
     path('register/', views.RegisterUser.as_view(), name='register'),
     path('login/', views.LoginUser.as_view(), name='login'),
     path('logout/', views.logout_user, name='logout'),

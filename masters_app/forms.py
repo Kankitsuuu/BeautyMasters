@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -35,10 +35,6 @@ class ChangePageForm(forms.ModelForm):
                                 widget=forms.TextInput(attrs={'class': 'form-control bg-transparent text-light fs-2'}))
     lastname = forms.CharField(min_length=2,
                                widget=forms.TextInput(attrs={'class': 'form-control bg-transparent text-light fs-2'}))
-    background = forms.ImageField(widget=forms.widgets.ClearableFileInput())
-    user_photo = forms.ImageField(widget=forms.widgets.ClearableFileInput())
-    background.widget.template_name = 'masters_app/test_clean_image.html'
-    user_photo.widget.template_name = 'masters_app/test_clean_image.html'
 
     class Meta:
         model = Page
@@ -80,9 +76,6 @@ class LinkForm(forms.ModelForm):
 
 
 class AlbumForm(forms.ModelForm):
-    main_picture = forms.ImageField(widget=forms.widgets.ClearableFileInput())
-    main_picture.widget.template_name = 'masters_app/test_clean_image.html'
-
     class Meta:
         model = Album
         fields = ('main_picture', 'name', 'description')
@@ -96,8 +89,6 @@ class AlbumForm(forms.ModelForm):
 
 
 class WorkForm(forms.ModelForm):
-    photo = forms.ImageField(widget=forms.widgets.ClearableFileInput())
-    photo.widget.template_name = 'masters_app/test_clean_image.html'
 
     class Meta:
         model = Work
@@ -109,5 +100,25 @@ class WorkForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'placeholder': 'Опис роботи', }),
         }
 
+
+class PasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Старий пароль",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "current-password", "autofocus": True}
+        ),
+    )
+    new_password1 = forms.CharField(
+        label="Новий пароль",
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        strip=False,
+        # help_text=password_validation.password_validators_help_text_html(),
+    )
+    new_password2 = forms.CharField(
+        label="Повторіть пароль",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+    )
 
 

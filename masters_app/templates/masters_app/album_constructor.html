@@ -28,7 +28,16 @@
                 <form name="album-constructor-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                     <div class="form-error">{{ form.non_field_errors }}</div>
-                    <p>{{ form.main_picture }}</p>
+                    <p>
+                        <!-- Custom File Input -->
+                        <label class="form-label text-white m-1 " for="customFile" style="text-align: justify-all;">
+                            <span class="btn btn-primary btn-rounded">
+                                Завантажити фото <i class="fas fa-arrow-alt-circle-up"></i>
+                            </span>
+                        </label>
+                        <input type="file" class="form-control d-none" id="customFile" name="main_picture"/>
+                        <!-- End Custom File Input -->
+                    </p>
                     <div class="form-error">{{ form.main_picture.errors }}</div>
                      <div class="card-body">
                         <p><label>{{ form.name.label }}: </label>{{ form.name }}</p>

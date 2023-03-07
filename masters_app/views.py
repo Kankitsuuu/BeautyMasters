@@ -99,7 +99,11 @@ class ChangePage( DataMixin, View):
         # POST
         if request.method == 'POST':
             form = ChangePageForm(instance=user.page, data=request.POST, files=request.FILES)
+            print(request.FILES)
             if form.is_valid():
+                user.first_name = form.cleaned_data['firstname']
+                user.last_name = form.cleaned_data['lastname']
+                user.save()
                 form.save()
                 return redirect('home')
 
@@ -113,7 +117,7 @@ class ChangePage( DataMixin, View):
 class SearchView(DataMixin, View):
 
     def get(self, request, *args, **kwargs):
-        page_list = Page.objects.all()
+        page_list = Page.objects.all().select_related('category', 'city')
         page_filter = MastersFilter(request.GET, queryset=page_list)
         searched = False
         if '_search' in request.GET:
@@ -408,5 +412,21 @@ class WorkEditView(DataMixin, View):
         return render(request, 'masters_app/work_constructor.html', context)
 
 
+class PasswordChangeView(DataMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        # checking user
+        if not request.user.is_authenticated:
+            return redirect('login')
 
+        if request.POST:
+            form = PasswordForm(user=request.user, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('account')
+            else:
+                form.add_error(None, 'ERROR')
 
+        form = PasswordForm(user=request.user)
+        title = 'Зміна пароля'
+        context = self.get_user_context(form=form, page=request.user.page, title=title)
+        return render(request, 'masters_app/password-change.html', context)
