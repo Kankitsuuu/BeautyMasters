@@ -17,12 +17,12 @@
         <div class = "container text-center  mt-5">
             <p class="w-25 text-center mx-auto">
                 <!-- Custom File Input -->
-                <label class="form-label text-white m-1 " for="customFile" style="text-align: justify-all;">
+                <label class="form-label text-white m-1 " for="wallpaper" style="text-align: justify-all;">
                     <span class="btn btn-primary btn-rounded">
                         Змінити бекграунд <i class="fas fa-arrow-alt-circle-up"></i>
                     </span>
                 </label>
-                <input type="file" class="form-control d-none" id="customFile" name="background"/>
+                <input type="file" class="form-control d-none" id="wallpaper" name="background"/>
                 <!-- End Custom File Input -->
             </p>
         </div>
@@ -60,12 +60,12 @@
                          alt="user-photo"
                     >
                    <!-- Custom File Input -->
-                    <label class="form-label text-white m-1 " for="customFile" style="text-align: justify-all;">
+                    <label class="form-label text-white m-1 " for="user-photo" style="text-align: justify-all;">
                         <span class="btn btn-primary btn-rounded">
                             Завантажити фото <i class="fas fa-arrow-alt-circle-up"></i>
                         </span>
                     </label>
-                    <input type="file" class="form-control d-none" id="customFile" name="background"/>
+                    <input type="file" class="form-control d-none" id="user-photo" name="user_photo"/>
                     <!-- End Custom File Input -->
                 </p>
                 <div class="form-error">{{ form.user_photo.errors }}</div>

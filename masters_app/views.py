@@ -86,7 +86,7 @@ class PageView(DataMixin, DetailView):
         return context
 
 
-class ChangePage( DataMixin, View):
+class ChangePage(DataMixin, View):
     template_name = 'masters_app/change_page.html'
 
     def dispatch(self, request,  *args, **kwargs):
@@ -99,7 +99,6 @@ class ChangePage( DataMixin, View):
         # POST
         if request.method == 'POST':
             form = ChangePageForm(instance=user.page, data=request.POST, files=request.FILES)
-            print(request.FILES)
             if form.is_valid():
                 user.first_name = form.cleaned_data['firstname']
                 user.last_name = form.cleaned_data['lastname']
@@ -329,7 +328,7 @@ class AlbumEditView(DataMixin, View):
                 form.save()
                 return redirect('albums', page_slug=page.slug)
             else:
-                print('Error')
+                form.add_error(None, 'Error')
 
         # GET
         else:
@@ -375,7 +374,6 @@ class WorkAddView(DataMixin, CreateView):
             'album': self.album,
         }
         Work.objects.create(**work_data)
-
         return redirect('album', self.album.pk)
 
 
