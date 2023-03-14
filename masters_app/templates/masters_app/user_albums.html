@@ -21,13 +21,14 @@
         {% for album in page_obj %}
             <div class = "col-xl-6 col-xxl-4 gx-5 h-auto">
                 <!-- Card -->
-                <div class="card mx-auto" style = "height: 500px; max-width: 400px;">
+                <div class="card mx-auto" style = "height: 500px; max-width: 320px;">
 
                   <div class="bg-image hover-overlay ripple"
                        data-mdb-ripple-color="light"
-                       style="height: 400px;
-                              background-image: url({{ album.main_picture.url }})"
+                       style="height: 300px;"
                   >
+                      <img src="{{ album.main_picture.url }}"
+                           style="object-fit: cover; height: 100%; width: 100%" alt="album-header">
                     <a href="{% url 'album' album.pk %}">
                       <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                     </a>
@@ -61,7 +62,7 @@
     <hr class="hr my-5">
     <p>
         <a  href="{% url 'show_page' page.slug %}">
-            <img src="{{ page.user_photo.url }}" style="max-height: 100px" class="rounded-circle mb-2" alt="user-photo">
+            <img src="{{ page.user_photo.url }}" style="max-height: 100px" class="rounded-6 mb-2" alt="user-photo">
             <br>
             <span class="text-light">{{ page }}</span>
         </a>

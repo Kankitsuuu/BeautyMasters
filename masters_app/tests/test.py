@@ -333,7 +333,6 @@ class MastersApplicationTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIsInstance(response, HttpResponseRedirect)
 
-
     def test_links_view_POST_delete(self):
         data = {'_delete': self.link.pk}
         response = self.create_response(url='links', method='POST', login=True, data=data)
